@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Lista de Tareas</title>
+
+    <style>
+        *{
+            margin:0;
+            padding:0;
+            box-sizing:border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body{
+            background: linear-gradient(135deg, #1e1e2f, #3a3a5f);
+            min-height:100vh;
+            display:flex;
+            justify-content:center;
+            align-items:center;
+            padding:20px;
+        }
+
+        .container{
+            background:white;
+            width:100%;
+            max-width:450px;
+            padding:25px;
+            border-radius:20px;
+            box-shadow:0 10px 25px rgba(0,0,0,0.3);
+        }
+
+        h1{
+            text-align:center;
+            margin-bottom:20px;
+            color:#333;
+        }
+
+        .input-area{
+            display:flex;
+            gap:10px;
+            margin-bottom:20px;
+        }
+
+        input{
+            flex:1;
+            padding:12px;
+            border:2px solid #ccc;
+            border-radius:10px;
+            font-size:16px;
+        }
+
+        button{
+            padding:12px 18px;
+            border:none;
+            border-radius:10px;
+            background:#5b7cff;
+            color:white;
+            cursor:pointer;
+            font-size:16px;
+            transition:0.2s;
+        }
+
+        button:hover{
+            background:#3f5fe0;
+        }
+
+        ul{
+            list-style:none;
+        }
+
+        li{
+            background:#f3f3f3;
+            padding:12px;
+            border-radius:12px;
+            margin-bottom:10px;
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+            transition:0.2s;
+        }
+
+        li.completed span{
+            text-decoration: line-through;
+            color: #777;
+        }
+
+        .actions{
+            display:flex;
+            gap:8px;
+        }
+
+        .delete-btn{
+            background:transparent;
+            border:none;
+            color:#e74c3c;
+            cursor:pointer;
+            font-weight:700;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Lista de Tareas</h1>
+
+        <div class="input-area">
+            <input id="taskInput" type="text" placeholder="Nueva tarea..." />
+            <button id="addBtn">Agregar</button>
+        </div>
+
+        <ul id="tasks"></ul>
+    </div>
+
+    <script>
+        const input = document.getElementById('taskInput');
+        const addBtn = document.getElementById('addBtn');
+        const tasks = document.getElementById('tasks');
+
+        function createTask(text){
+            const li = document.createElement('li');
+            const span = document.createElement('span');
+            span.textContent = text;
+
+            const actions = document.createElement('div');
+            actions.className = 'actions';
+
+            const toggle = document.createElement('button');
+            toggle.textContent = '✓';
+            toggle.onclick = ()=> li.classList.toggle('completed');
+
+            const del = document.createElement('button');
+            del.textContent = '✕';
+            del.className = 'delete-btn';
+            del.onclick = ()=> li.remove();
+
+            actions.appendChild(toggle);
+            actions.appendChild(del);
+
+            li.appendChild(span);
+            li.appendChild(actions);
+            return li;
+        }
+
+        addBtn.addEventListener('click', ()=>{
+            const val = input.value.trim();
+            if(!val) return;
+            tasks.appendChild(createTask(val));
+            input.value = '';
+        });
+
+        input.addEventListener('keydown', (e)=>{
+            if(e.key === 'Enter') addBtn.click();
+        });
+    </script>
+</body>
+</html>
